@@ -71,7 +71,7 @@ function handleAddItem() {
 
 
 for (let i = 0; i < todos.length; i++) {
-    new item(todos[v]);
+    new item(todos[i]);
 }
 
 new item("playing football");
