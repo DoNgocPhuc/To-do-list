@@ -1,77 +1,90 @@
-const container = document.querySelector('.container');
-const add = document.querySelector('.add');
-let inputValue = document.querySelector('.input');
-let todos = [];//Store to do list
-class item {
-    constructor(name) {
-        this.createItem(name);
-    }
-
-    createItem(name) {
-        let itemBox, input, edit, remove;
-        //Create div tag
-        itemBox = document.createElement('div');
-        itemBox.classList.add('item');
-
-        //Create input
-        input = document.createElement('input');
-        input.type = "text";
-        input.disabled = true;
-        input.value = name;
-        input.classList.add('item_input');
-
-        //Create button edit
-        edit = document.createElement('button');
-        edit.classList.add('edit');
-        edit.innerHTML = "EDIT";
-        edit.addEventListener('click', () => this.edit(input, name));
-
-        //Create button remove
-        remove = document.createElement('button');
-        remove.classList.add('remove');
-        remove.innerHTML = "REMOVE";
-        remove.addEventListener('click', () => this.remove(itemBox, name));
-
-        container.appendChild(itemBox);
-
-        itemBox.appendChild(input);
-        itemBox.appendChild(edit);
-        itemBox.appendChild(remove);
-
-    }
-
-    edit(input, name) {
-        if (input.disabled == true) {
-            input.disabled = !input.disabled;
-        } else {
-            let indexof;
-            input.disabled = !input.disabled;
-            indexof = todos.indexOf(name);
-            todos[indexof] = input.value;
+function buttonComponent(options) {
+    const defaultOptions = {
+        className: "btn",
+        onClick: function () {
         }
-    }
+    };
+    const {className, text, onClick} = {...defaultOptions, ...options};
+    const buttonElement = document.createElement("button");
 
-    remove(itemBox, name) {
-        let index;
-        itemBox.parentNode.removeChild(itemBox);
-        index = todos.indexOf(name);
-        todos.splice(index, 1);
-    }
+    buttonElement.classList.add(className);
+    buttonElement.innerText = text;
+    buttonElement.addEventListener("click", function () {
+        onClick();
+    });
+
+    return buttonElement;
 }
 
-add.addEventListener('click', handleAddItem);
+function listComponent({text, onDelete, onEdit}) {
+    const listElement = document.createElement("div");
 
-function handleAddItem() {
-    if (inputValue.value !== '') {
-        new item(inputValue.value);
-        todos.push(inputValue.value);
-        inputValue.value = '';
+    const buttonDelete = buttonComponent({
+        text: "Delete",
+        onClick: function () {
+            onDelete();
+        }
+    });
+
+    const buttonEdit = buttonComponent({
+        text: "Edit",
+        onClick: function () {
+            onEdit();
+        }
+    });
+
+    listElement.classList.add("list");
+
+    listElement.innerText = text;
+
+    listElement.appendChild(buttonDelete);
+    listElement.appendChild(buttonEdit);
+
+    return listElement;
+}
+
+const appElement = document.getElementById("app");
+
+const todolistComponent1 = listComponent({
+    text: "task 1",
+    onDelete: function () {
+        console.log("delete 1");
+    },
+    onEdit: function () {
+        console.log("edit 1");
     }
-}
+});
 
+const todolistComponent2 = listComponent({
+    text: "task 2",
+    onDelete: function () {
+        console.log("delete 2");
+    },
+    onEdit: function () {
+        console.log("edit 2");
+    }
+});
 
-for (let i = 0; i < todos.length; i++) {
-    new item(todos[i]);
-}
+const inputComponent = document.createElement("input");
+inputComponent.setAttribute("id", "input");
+const addButtonComponent = buttonComponent({
+    text: "Add",
+    onClick: function () {
+        let inputElement = document.getElementById("input");
+        const todolistComponent = listComponent({
+            text: inputElement.value,
+            onDelete: function () {
+                console.log("delete");
+            },
+            onEdit: function () {
+                console.log("edit");
+            }
+        });
+        appElement.appendChild(todolistComponent);
+    }
+});
 
-new item("playing football");
+appElement.appendChild(inputComponent);
+appElement.appendChild(addButtonComponent);
+appElement.appendChild(todolistComponent1);
+appElement.appendChild(todolistComponent2);
