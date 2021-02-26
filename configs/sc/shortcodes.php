@@ -15,6 +15,7 @@ return [
 				'header_desc_text_align',
 				'hsblog_cats'
 			],
+			'design'  => 'bootstrap_columns',
 			'styling' => [
 				[
 					'name' => 'css_custom',

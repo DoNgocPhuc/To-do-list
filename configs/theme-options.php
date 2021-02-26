@@ -25,9 +25,9 @@ return [
 			[
 				'id'          => 'hsblog_base_url',
 				'title'       => 'Hsblog Base Url',
-				'required'    => ['toggle_hsblog', '=', 'enable'],
+//				'required'    => ['toggle_hsblog', '=', 'enable'],
 				'type'        => 'text',
-				'description' => 'EG: https://hsblog.com'
+				'description' => 'EG: http://highspeedblog.com/'
 			],
 //			[
 //				'id'     => 'hsblog_section_open_close',
